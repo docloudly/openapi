@@ -1,1 +1,177 @@
-hello
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>懂云违章数据平台</title>
+    <meta name=keywords content="车务、查违章、代缴、年检、免检">
+    <meta name="description"
+          content="违章数据开放平台">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- favicon.ico in the root directory -->
+    <link rel="stylesheet" href="./css/main.css">
+    <meta property="og:title" content="违章数据开放平台">
+</head>
+<body class="shown">
+<div class="container-wrap" id="app">
+
+    <div class="container">
+        <div class="slides">
+            <div class="slide slide--one">
+                <div class="slide__inner">
+                    <div class="header">
+                        <div class="header__inner">
+                            <a class="logo" href="/">
+                                <span class="logo__icon"></span>
+                                <div class="logo_text">
+                                    <span class="logo__title">懂云</span>
+                                    <span class="logo__description"><span> </span>违章数据平台</span>
+                                </div>
+                            </a>
+
+                            <div class="nav">
+                                <a class="nav__item nav__item--home" href="#/">首页</a>
+                                <a class="nav__item nav__item--document" target="_blank" href="./document.html">使用手册</a>
+                                <a class="nav__item nav__item--logs" target="_blank" href="./document.html#/changelog">版本日志</a>
+                            </div>
+
+                            <div class="shares">
+                                <ul class="social-links">
+                                    <li class="social-link social-link--wx tooltip tooltip--indis" >
+                                        <a href="#" @mouseenter="wxEnter"></a>
+                                    </li>
+                                    <li class="social-link social-link--gh">
+                                        <a href="https://github.com/docloudly/openapi" target="_blank"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tagline">
+                        <h2 class="tagline__title">违章数据服务</h2>
+                        <div class="tagline__body">违章查缴功能为广大的车主提供查询违章的功能，让用户做到足不出户查看车辆即时违章信息，免去交管窗口排队烦恼。</div>
+                        <div class="tagline__button">
+                            <a class="button button--secondary" href="./document.html">从这里开始</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide slide--features">
+                <div class="slide__inner">
+                    <div class="section section--enter">
+                        <h2 class="title">服务内容</h2>
+                        <div class="text">
+                            <ul>
+                                <li>服务：提供全国车辆违章查询</li>
+                                <li>计费方式：按次收费／车辆包年／企业包年</li>
+                                <li>主动违章信息推送</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="section section--enter">
+                        <h2 class="title">行业优势</h2>
+                        <div class="features">
+                            <div class="feature-item">
+                                <span class="features__icon features-icon--style"></span>
+                                <div class="features-text">
+                                    <h2 class="features__title">覆盖城市</h2>
+                                    <p class="features__description">覆盖28个省份304个城市，城市覆盖率已达到83.61%</p>
+                                </div>
+                            </div>
+
+                            <div class="feature-item">
+                                <span class="features__icon features-icon--component"></span>
+                                <div class="features-text">
+                                    <h2 class="features__title">准确性</h2>
+                                    <p class="features__description">多地交管部分合作伙伴关系，直连11省114市官方数据，成熟传输通道，数据及时准确，缓存不超过24小时，准确率99.93%</p>
+                                </div>
+                            </div>
+
+                            <div class="feature-item">
+                                <span class="features__icon features-icon--npm"></span>
+                                <div class="features-text">
+                                    <h2 class="features__title">稳定性</h2>
+                                    <p class="features__description">高效系统架构配合服务器群组轻松支持3000次/秒并发查询，响应速度最快50ms，成功率98.5%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-container" :class="isQrShow ? 'active' : ''" @click="modalClick"> 
+            <div class="qr-modal">
+                <div style="padding: 10px;">
+                    请通过邮箱或者QQ联系我们，邮箱：bd@docloud.vip，QQ：978174573
+                </div> 
+                <img style="width: 200px;" src="img/qq_qrcode.jpg">
+            </div>
+    </div>
+</div>
+
+<div class="footer">
+    <div class="footer-inner">
+        <div class="footer--copyright">
+            Copyright © 2019 杭州懂云网络科技有限公司
+        </div>
+    </div>
+</div>
+<script src="js/flickity.pkgd.min.js"></script>
+<script src="js/prism.js"></script>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      textCases: [],
+      rollCases: [],
+      isQrShow: false,
+      gists: []
+    },
+    created: function () {
+      var self = this;
+    },
+    methods: {
+        wxEnter: function () {
+            this.isQrShow = true
+        },
+        modalClick: function () {
+            this.isQrShow = false
+        },
+        codeEnter: function (item, $evt) {
+            switch (item.id) {
+                case 1: {
+                  item.style = 'z-index: 3; transform: scale(1) translate(-95%, 0%); transform-origin: 0% 0%; font-weight: 500;'
+                  break;
+                }
+                case 3: {
+                  item.style = 'z-index: 3; transform: scale(1) translate(120%, 0%); transform-origin: 100% 0%; font-weight: 500;'
+                  break;
+                }
+            }
+        },
+        codeLeave: function (item) {
+          item.style = 'z-index: -1;'
+        }
+    }
+  });
+
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?c7f05143921457eb8a1c1ee6eeb1a3c3";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</body>
+</html>
