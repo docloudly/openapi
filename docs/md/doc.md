@@ -47,9 +47,9 @@ curl https://openapi.docloud.vip/sign/test?city=1&name=demo&app_key=TEST&timesta
 
 具体签名算法如下：
 
-假设URL为https://openapi.docloud.vip/amap/city/condition?name=jack&amp;city=1&amp;citz=3
-1. 获取URL里的?后面的参数，得到urlParam：name=jack&amp;city=1&amp;citz=3
-2. 后面的参数按key升序重排再重新以&amp;拼装，得到urlParam：city=1&amp;citz=3&amp;name=jack
+假设URL为https://openapi.docloud.vip/amap/city/condition?name=jack&city=1&citz=3
+1. 获取URL里的?后面的参数，得到urlParam：name=jack&city=1&citz=3
+2. 后面的参数按key升序重排再重新以&拼装，得到urlParam：city=1&citz=3&name=jack
 3. 执行以下加密过程（reuqestBody为POST请求体，GET请求为空）：
 UpperCase(md5Hex(reverse(app_key+app_secret+urlParam+requestBody)))
 [手把手一步一步调签名点我](http://openapi.docloud.vip/signDemo/index.php "手把手一步一步调签名点我")
@@ -57,7 +57,7 @@ UpperCase(md5Hex(reverse(app_key+app_secret+urlParam+requestBody)))
 签名验证接口：
 
 ```
-https://openapi.docloud.vip:8443/sign/test?app_key=TEST&amp;timestamp=1472182371254&amp;sign=FD946BC73EED770270114B1118CD8ACB
+https://openapi.docloud.vip:8443/sign/test?app_key=TEST&timestamp=1472182371254&sign=FD946BC73EED770270114B1118CD8ACB
 ```
 
 参照上面的地址，自行设置参数把sign替换成根据签名算法生成的签名进行验证，若成功则返回：
@@ -66,7 +66,7 @@ https://openapi.docloud.vip:8443/sign/test?app_key=TEST&amp;timestamp=1472182371
     "success": true,
     "data": {
         "requestBody": "{\"data\":\"顺便测试中文乱码\"}",
-        "urlParam": "app_key=TEST&amp;timestamp=1472182371254&amp;sign=FD946BC73EED770270114B1118CD8ACB"
+        "urlParam": "app_key=TEST&timestamp=1472182371254&sign=FD946BC73EED770270114B1118CD8ACB"
     }
 }
 ```
@@ -82,7 +82,7 @@ import java.util.*;
 public class SignUtil {
 
 	public static void main(String[] args) {
-		String url = "http://localhost:8080/open/sign/test?city=123&amp;name=xxx&amp;app_key=TEST&amp;timestamp=";
+		String url = "http://localhost:8080/open/sign/test?city=123&name=xxx&app_key=TEST&timestamp=";
 		url += new Date().getTime();
 		System.out.println(url);
 		String sign = null;
@@ -93,13 +93,13 @@ public class SignUtil {
 			e.printStackTrace();
 		}
 		System.out.println(sign);
-		System.out.println(url + "&amp;sign=" + sign);
+		System.out.println(url + "&sign=" + sign);
 	}
 
 	public static String sortUrlParam(String url) {
 		List<String& paramList = new ArrayList<&();
 		url = url.substring(url.indexOf("?") + 1, url.length());
-		String[] urlParam = url.split("&amp;");
+		String[] urlParam = url.split("&");
 		for (String param : urlParam) {
 			paramList.add(param);
 		}
@@ -109,7 +109,7 @@ public class SignUtil {
 				return arg0.split("=")[0].compareTo(arg1.split("=")[0]);
 			}
 		});
-		url = StringUtils.join(paramList, "&amp;");
+		url = StringUtils.join(paramList, "&");
 		return url;
 	}
 
@@ -256,15 +256,15 @@ class DongYunModel{
      */
     static private function initUrl($url, $post_data = ''){
         list($url, $urlParam) = explode('?', $url);
-        $urlParam .= (empty($urlParam) ? '' : '&amp;') . http_build_query(array(
+        $urlParam .= (empty($urlParam) ? '' : '&') . http_build_query(array(
                 'app_key' =& self::APP_KEY,
                 'timestamp' =& time()
             ));
-        $param = explode('&amp;', $urlParam);
+        $param = explode('&', $urlParam);
         sort($param);
-        $urlParam = implode("&amp;", $param);
+        $urlParam = implode("&", $param);
         $sign = strtoupper(md5(strrev(self::APP_KEY . self::APP_SECRET . $urlParam . $post_data)));
-        $url = $url . "?" . $urlParam . '&amp;sign=' . $sign;
+        $url = $url . "?" . $urlParam . '&sign=' . $sign;
         return $url;
     }
 
@@ -286,7 +286,7 @@ class DongYunModel{
             curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         }
 
-       !empty($options) &amp;&amp; curl_setopt_array($curl, $options);
+       !empty($options) && curl_setopt_array($curl, $options);
 
         // 设置body信息
         if(!empty($post)){
@@ -782,7 +782,7 @@ class DongYunModel{
 * 请求地址： 回调URL由接入方提供
 * 请求方式： POST
 
-安全加密： 回调时会根据分配给合作方的app_key和app_secret按照【签名规则】生成sign并附到回调URL上，如：http://xxx.xxx.com/api/changeStatus?app_key=C3AD3OMBO5W3JTB0&amp;timestamp=1490769858578&amp;sign=A0BB181E6899A9E451A8900ECFF72AA3 合作方按照签名规则校验sign是否合法来确认是我方回调的合法请求。
+安全加密： 回调时会根据分配给合作方的app_key和app_secret按照【签名规则】生成sign并附到回调URL上，如：http://xxx.xxx.com/api/changeStatus?app_key=C3AD3OMBO5W3JTB0&timestamp=1490769858578&sign=A0BB181E6899A9E451A8900ECFF72AA3 合作方按照签名规则校验sign是否合法来确认是我方回调的合法请求。
 
 接口说明：
 
