@@ -57,7 +57,7 @@ UpperCase(md5Hex(reverse(app_key+app_secret+urlParam+requestBody)))
 签名验证接口：
 
 ```
-https://openapi.docloud.vip:8443/sign/test?app_key=TEST&timestamp=1472182371254&sign=FD946BC73EED770270114B1118CD8ACB
+https://openapi.docloud.vip/sign/test?app_key=TEST&timestamp=1472182371254&sign=FD946BC73EED770270114B1118CD8ACB
 ```
 
 参照上面的地址，自行设置参数把sign替换成根据签名算法生成的签名进行验证，若成功则返回：
