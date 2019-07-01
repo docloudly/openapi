@@ -799,9 +799,10 @@ class DongYunModel{
 |orderStatusTime|	string|	状态变更时间|
 |refundMoney|double|退款金额|
 |cancelReason|string|取消原因(当且仅当订单被取消时返回)|
-|violations|object|	违章明细,|
+|violations|object|	违章明细|
 
-violations:
+**violations值是一个数组对象，属性值字段如下:**
+
 |参数名	|类型|	描述|
 |---|---|---|
 |code|	string|	违章编码,唯一，非违章条例码|
@@ -815,10 +816,16 @@ violations:
         "orderStatus": 1,
         "orderStatusTime": "2016-06-06 12:32:38",
 		"refundMoney" : 200.00,
-		"violations": [{
-				"code": "1232-D1",
-				"processStatus": 1
-		}]
+		"violations": [
+                    {
+                    "code": "1232-D1",
+                    "processStatus": 1
+                    },
+                    {
+                    "code": "1233-D2",
+                    "processStatus": 2
+                    }
+                ]
     }
 }
 ```
