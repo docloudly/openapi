@@ -799,7 +799,11 @@ class DongYunModel{
 |orderStatusTime|	string|	状态变更时间|
 |refundMoney|double|退款金额|
 |cancelReason|string|取消原因(当且仅当订单被取消时返回)|
-|violations|object|	违章明细|
+|violations|object|	违章明细,|
+
+violations:
+|参数名	|类型|	描述|
+|---|---|---|
 |code|	string|	违章编码,唯一，非违章条例码|
 |processStatus	|int	|违章处理状态：1：未处理，2：处理中，3：已处理|
 
