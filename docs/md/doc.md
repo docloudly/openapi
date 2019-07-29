@@ -640,6 +640,7 @@ class DongYunModel{
 |violationCodes|array-string|是|	违章记录唯一编码，查询出违章的每一个 code|
 |totalPrice|	string|是|	代办总金额（罚款金额+服务费）|
 |outOrderNo|	string|是|	第三方订单流水号（重复提交会报错）|
+|payTradeNo|	string|否|	第三方支付流水号|
 |token|	string|是|	用户身份标识|
 |carType|string|否|车辆类型：01大型车 02小型车（默认）|
 |lng	|float|否|	下单时用户所在地经度|
