@@ -2122,3 +2122,298 @@ class DongYunModel{
  **备注** 
 
 - 更多返回错误代码请看首页的错误代码描述
+
+
+## 罚单代缴
+
+### 支持城市及计费规则
+
+请求地址：/ticket/rule
+请求方式：GET
+
+接口说明：
+获取当前支持城市及对应城市的服务费、滞纳金计费规则。
+若列表中不存在则暂未接入该城市罚单代缴业务。
+
+请求参数：
+无
+
+返回参数：
+
+|参数名|类型|描述|
+|---|---|---|
+|cityId|int|城市id|
+|cityName|string|城市名称|
+|cityCode|int|城市行政编码|
+|serviceFee|int|服务费|
+|lateFee|double|滞纳金(收费比例，如0.03为超过14天每天收取罚单金额3%的滞纳金，具体规则以当地交通法律法规为准)|
+|open|boolean|是否开放(0-未开放 1-开放)|
+
+返回示例：
+
+```json
+{
+    "success": true,
+    "data": [
+        {
+            "cityId": 3,
+            "cityName": "北京市",
+            "cityCode": 110,
+            "serviceFee": 19,
+            "lateFee": 0.03,
+            "valid": 1
+        },
+        {
+            "cityId": 2,
+            "cityName": "上海市",
+            "cityCode": 310,
+            "serviceFee": 19,
+            "lateFee": 0.03,
+            "valid": 0
+        },
+        {
+            "cityId": 241,
+            "cityName": "重庆市",
+            "cityCode": 500,
+            "serviceFee": 10,
+            "lateFee": 0.03,
+            "valid": 1
+        },
+        {
+            "cityId": 45,
+            "cityName": "鞍山市",
+            "cityCode": 1022,
+            "serviceFee": 10,
+            "lateFee": 0.03,
+            "valid": 1
+        },
+        {
+            "cityId": 47,
+            "cityName": "本溪市",
+            "cityCode": 1202,
+            "serviceFee": 12,
+            "lateFee": 0.04,
+            "valid": 1
+        },
+        {
+            "cityId": 9,
+            "cityName": "石家庄市",
+            "cityCode": 1301,
+            "serviceFee": 10,
+            "lateFee": 0.03,
+            "valid": 1
+        },
+        {
+            "cityId": 10,
+            "cityName": "唐山市",
+            "cityCode": 1302,
+            "serviceFee": 10,
+            "lateFee": 0.03,
+            "valid": 1
+        },
+        {
+            "cityId": 11,
+            "cityName": "秦皇岛市",
+            "cityCode": 1303,
+            "serviceFee": 10,
+            "lateFee": 0.03,
+            "valid": 1
+        },
+        {
+            "cityId": 12,
+            "cityName": "邯郸市",
+            "cityCode": 1304,
+            "serviceFee": 10,
+            "lateFee": 0.03,
+            "valid": 1
+        }
+    ]
+}
+```
+
+### 查看罚单费用
+
+请求地址：/ticket/query/price
+
+请求方式：POST
+
+接口说明：
+根据罚单信息获取实时报价明细
+
+请求参数：
+
+|参数名|类型|必填|描述|
+|---|---|---|---|
+|ticketNumber|string|是|罚单编号|
+|ticketAmount|int|是|罚单金额|
+|recognitionDate|string|是|认罚日期(yyyy-MM-dd)|
+
+请求示例：
+
+```json
+{
+    "ticketNumber": "330132994422",
+    "ticketAmount": "200",
+    "recognitionDate": "2017-04-20"
+}
+```
+
+返回参数：
+
+|参数名	|类型|	描述|
+|---|---|---|
+|support	|boolean|是否支持办理|
+|totalFee|	double|总费用|
+|serviceFee|	int|	服务费|
+|lateFee|	double|	滞纳金|
+
+返回示例：
+
+```json
+{
+    "success": true,
+    "data": {
+        "support": true,
+        "totalFee": 212.64,
+        "serviceFee": 19,
+        "lateFee": 5.64
+    }
+}
+
+{
+    "success": true,
+    "data": {
+        "support": false
+    }
+}
+```
+
+### 罚单代缴下单
+
+请求地址：/ticket/create/order
+
+请求方式：POST
+
+接口说明：罚单代缴下单
+
+请求参数：
+
+|参数名|类型|必填|描述|
+|---|---|---|---|
+|ticketNumber|string|是|罚单编号|
+|ticketAmount|int|是|罚单金额|
+|recognitionDate|string|是|认罚日期(yyyy-MM-dd)|
+|username|string|是|处罚人姓名|
+|totalFee|	double|否|总费用(填写则会进行金额校验，否则以平台金额为准)|
+|serviceFee|	int|否|	服务费(填写则会进行金额校验，否则以平台金额为准)|
+|lateFee|	double|否|	滞纳金(填写则会进行金额校验，否则以平台金额为准)|
+
+请求示例：
+
+```json
+{
+    "ticketNumber": "330132994422",
+    "ticketAmount": "100",
+    "recognitionDate": "2017-04-20",
+    "username": "王思聪",
+    "totalFee": 129.0,
+    "serviceFee": 20,
+    "lateFee": 9.0
+}
+```
+
+返回参数：
+
+|参数名	|类型|	描述|
+|---|---|---|
+|orderId	|int|订单ID|
+|payUrl|string|支付地址|
+
+返回示例：
+
+```json
+{
+    "success": true,
+    "data": {
+        "orderId": 2399302,
+		"payUrl":""
+    }
+}
+```
+
+
+
+### 查询罚单订单状态
+
+请求地址：/ticket/order/status
+
+请求方式：GET
+
+接口说明：根据订单编号查询对应的罚单代缴订单状态。
+
+请求参数：
+
+|参数名	|类型|必填|	描述|
+|---|---|---|---|
+|orderId|	int	|是|订单编号|
+
+返回参数：
+
+|参数名	|类型|	描述|
+|---|---|---|
+|orderId|	int|	订单编号|
+|orderStatus|	int|订单状态：1：未处理，2：处理中，3：已处理，4:已关闭|
+|orderStatusTime|	string|	状态变更时间|
+|payUrl|string|支付地址|
+
+```json
+{
+    "success": true,
+    "data": {
+        {
+            "orderId": 1321321,
+            "orderStatus": 1,
+            "orderStatusTime": "2016-06-06 12:32:38",
+			"payUrl":""
+        }
+    }
+}
+```
+
+### 订单状态变更通知
+
+请求方式： POST
+
+请求地址： 回调URL由接入方提供
+
+安全加密： 回调时会根据分配给合作方的app_key和app_secret按照【签名规则】生成sign并附到回调URL上，如：http://xxx.xxx.com/api/ticket/callback?app_key=C3AD3OMBO5W3JTB0&timestamp=1490769858578&sign=A0BB181E6899A9E451A8900ECFF72AA3 合作方按照签名规则校验sign是否合法来确认是我方回调的合法请求。
+
+接口说明：
+
+订单状态发生变更时会调用**回调URL**通知第三方
+
+通知状态变更场景：支付成功、订单完成、订单关闭。
+
+|参数名	|类型|	描述|
+|---|---|---|
+|orderId|	int|	订单编号|
+|orderStatus|	int|订单状态：1-未处理 2-处理中 3-已处理 4-已关闭|
+|modifyTime|	string|	状态变更时间|
+
+```json
+{
+    "success": true,
+    "data": {
+        "orderId": 1321321,
+        "orderStatus": 1,
+        "modifyTime": "2016-06-06 12:32:38"
+    }
+}
+```
+
+若接收方处理成功返回：
+```json
+{
+    "success": true
+ }
+```
